@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data files (large)
+data/*.db
+*.db
+
+# Logs
+*.log
+floodwatch.log
+
+# Model files (can be regenerated)
+# Uncomment below if you don't want to push model files
+# *.pkl
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+.docker/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Environment
+.env

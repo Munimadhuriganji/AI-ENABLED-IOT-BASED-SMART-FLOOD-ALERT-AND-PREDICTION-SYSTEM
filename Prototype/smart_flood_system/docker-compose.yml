@@ -1,0 +1,31 @@
+services:
+  web:
+    build: .
+    image: floodwatch:latest
+    container_name: floodwatch_web
+
+    # Map container port -> host port
+    ports:
+      - "5000:5000"
+
+    # Optional: live-edit code + persist DB
+    volumes:
+      - ./:/app           # so you can edit code without rebuild (good for dev)
+      - ./data:/app/data  # persist SQLite DB & logs
+
+    environment:
+      # Admin key for /admin/ewma-plot etc.
+      ADMIN_KEY: ${ADMIN_KEY:-supersecret123}
+
+      # Twilio (optional – if empty, SMS stub will just log)
+      TWILIO_SID: ${TWILIO_SID:-}
+      TWILIO_TOKEN: ${TWILIO_TOKEN:-}
+      TWILIO_FROM: ${TWILIO_FROM:-}
+      SMS_TO: ${SMS_TO:-+91XXXXXXXXXX}
+
+      # EWMA tuning (same as app.py defaults, override if needed)
+      EWMA_ALPHA: ${EWMA_ALPHA:-0.1}
+      EWMA_K: ${EWMA_K:-3.0}
+
+    # Keep container running unless it crashes repeatedly
+    restart: unless-stopped

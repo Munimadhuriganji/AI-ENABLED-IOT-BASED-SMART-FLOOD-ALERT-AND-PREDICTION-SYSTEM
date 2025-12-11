@@ -1,0 +1,103 @@
+{% extends "layout.html" %}
+
+{% block title %}Alert History · FloodWatch{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Alert History</h1>
+        <p class="page-subtitle">View, filter, and export all flood monitoring alerts.</p>
+    </div>
+</div>
+
+<div class="alerts-layout">
+    <!-- Left: filters + metrics -->
+    <section class="alerts-filters-card card">
+        <div class="card-header">
+            <h2>Filter &amp; Search</h2>
+        </div>
+        <div class="card-body">
+            <div class="form-row">
+                <label for="risk-filter">Risk level</label>
+                <select id="risk-filter" class="form-control">
+                    <option value="all">All levels</option>
+                    <option value="High/Critical">High / Critical</option>
+                    <option value="Medium">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label for="search-node">Sensor / Node</label>
+                <input id="search-node" class="form-control" type="text" placeholder="e.g. node1, node2, node3">
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-chip">
+                    <span class="metric-label">Total alerts</span>
+                    <span class="metric-value" id="metric-total">0</span>
+                </div>
+                <div class="metric-chip high">
+                    <span class="metric-label">High / Critical</span>
+                    <span class="metric-value" id="metric-high">0</span>
+                </div>
+                <div class="metric-chip medium">
+                    <span class="metric-label">Medium</span>
+                    <span class="metric-value" id="metric-medium">0</span>
+                </div>
+                <div class="metric-chip low">
+                    <span class="metric-label">Low</span>
+                    <span class="metric-value" id="metric-low">0</span>
+                </div>
+            </div>
+
+            <div class="export-row">
+                <button id="export-csv" class="btn btn-outline">
+                    Export filtered CSV
+                </button>
+                <span class="export-hint">
+                    Exports only the alerts currently visible in the table.
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Right: table -->
+    <section class="alerts-table-card card">
+        <div class="card-header table-header">
+            <div>
+                <h2>Alerts</h2>
+                <p class="card-subtitle">
+                    Showing <span id="alerts-count">0</span> alerts
+                    (auto-refresh every 5 seconds).
+                </p>
+            </div>
+        </div>
+
+        <div class="table-wrapper">
+            <table class="data-table" aria-label="Alert history">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Node</th>
+                        <th>Risk</th>
+                        <th>Probability</th>
+                        <th>Time</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody id="alerts-tbody">
+                    <!-- rows injected by alerts.js -->
+                    <tr class="empty-row">
+                        <td colspan="6">Loading alerts…</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/alerts.js') }}?v=2"></script>
+{% endblock %}

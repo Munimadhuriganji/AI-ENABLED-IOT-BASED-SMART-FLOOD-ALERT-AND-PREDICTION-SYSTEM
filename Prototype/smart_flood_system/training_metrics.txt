@@ -1,0 +1,25 @@
+=== FloodWatch Model Training Metrics ===
+
+Dataset shape: (6000, 4)
+Features: level_now, delta, rain_sum
+Labels: 0=NoRisk, 1=Low, 2=High(Critical)
+
+---- Classification report (all classes) ----
+              precision    recall  f1-score   support
+
+           0      1.000     1.000     1.000      1384
+           1      0.795     0.946     0.864        37
+           2      0.972     0.886     0.927        79
+
+    accuracy                          0.993      1500
+   macro avg      0.923     0.944     0.930      1500
+weighted avg      0.993     0.993     0.993      1500
+
+
+---- Confusion matrix (rows: true, cols: pred) ----
+[[1384, 0, 0], [0, 35, 2], [0, 9, 70]]
+
+---- Critical class (label==2) ----
+precision: 0.972
+recall:    0.886
+f1-score:  0.927

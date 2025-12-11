@@ -1,0 +1,78 @@
+// Simple ESP32 firmware template for Smart Flood Alert
+// Use Arduino IDE, select ESP32 board, replace WiFi + SERVER details
+
+#include <WiFi.h>
+#include <HTTPClient.h>
+
+const char* WIFI_SSID = "YOUR_WIFI_SSID";
+const char* WIFI_PASS = "YOUR_WIFI_PASSWORD";
+const char* SERVER_URL = "http://YOUR_PC_IP:5000/ingest";
+
+unsigned long lastSample = 0;
+int sampleIntervalMs = 60000; // 60 seconds
+float lastLevel = 0.0;
+
+void setup() {
+  Serial.begin(115200);
+  WiFi.begin(WIFI_SSID, WIFI_PASS);
+  Serial.print("Connecting to WiFi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\nConnected!");
+  // TODO: init ultrasonic + rain sensor pins, buzzer, etc.
+}
+
+float readUltrasonic() {
+  // TODO: replace with real ultrasonic code
+  // Placeholder: random-like test value
+  return 20.0 + (float)random(-5, 5);
+}
+
+float readRain() {
+  // TODO: replace with real rain sensor code
+  return 0.0;
+}
+
+void sendData(float level, float rain, bool pre_alert) {
+  if (WiFi.status() == WL_CONNECTED) {
+    HTTPClient http;
+    http.begin(SERVER_URL);
+    http.addHeader("Content-Type", "application/json");
+
+    String payload = "{";
+    payload += "\"node_id\":\"node1\",";
+    payload += "\"level\":" + String(level) + ",";
+    payload += "\"rain\":" + String(rain) + ",";
+    payload += "\"pre_alert\":" + String(pre_alert ? "true" : "false");
+    payload += "}";
+
+    int code = http.POST(payload);
+    Serial.print("POST code: ");
+    Serial.println(code);
+    http.end();
+  } else {
+    Serial.println("WiFi not connected");
+  }
+}
+
+void loop() {
+  unsigned long now = millis();
+  if (now - lastSample >= sampleIntervalMs) {
+    float level = readUltrasonic();
+    float rain = readRain();
+    float delta = level - lastLevel;
+    bool pre = false;
+
+    // Simple pre-alert rule: if level jumped more than 5 units
+    if (delta > 5.0) {
+      pre = true;
+      // TODO: trigger buzzer/LED here
+    }
+
+    sendData(level, rain, pre);
+    lastLevel = level;
+    lastSample = now;
+  }
+}

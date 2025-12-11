@@ -1,0 +1,8 @@
+flask
+gunicorn            # only if you use gunicorn, else optional
+numpy
+pandas
+scikit-learn
+joblib
+matplotlib
+twilio              # needed only if you want real SMS

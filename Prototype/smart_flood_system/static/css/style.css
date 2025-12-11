@@ -1,0 +1,585 @@
+/* style.css - FloodWatch UI (upgraded)
+   Put this in static/css/style.css
+*/
+
+/* Basic page */
+:root {
+  --bg: #f4f6f8;
+  --card-bg: #ffffff;
+  --muted: #6c757d;
+  --primary: #0d6efd;
+  --accent: #2d9aff;
+  --glass: rgba(255, 255, 255, 0.85);
+  --shadow: 0 6px 18px rgba(20, 20, 20, 0.04);
+  --border: rgba(0, 0, 0, 0.06);
+  --success: #198754;
+  --danger: #dc3545;
+  --warning: #ffc107;
+  --max-width: 1280px;
+
+  /* New vars for snapshot cards */
+  --border-subtle: rgba(0, 0, 0, 0.1);
+  --border-strong: rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --text-muted: var(--muted);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: #222;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Container width */
+.site-main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Navbar */
+.navbar {
+  background: linear-gradient(90deg, var(--primary), #0b5ed7);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
+  padding: 10px 18px;
+}
+
+.navbar .navbar-brand {
+  font-weight: 700;
+  color: #fff !important;
+  font-size: 1.1rem;
+}
+
+.navbar .nav-link {
+  color: rgba(255, 255, 255, 0.95) !important;
+}
+
+.navbar .nav-link:hover {
+  color: #fff !important;
+  text-decoration: underline;
+}
+
+/* Cards */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+
+.card-header {
+  background: transparent;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+  font-weight: 600;
+  padding: 14px 18px;
+}
+
+.card-body {
+  padding: 18px;
+}
+
+/* Sensor small card */
+.sensor-card {
+  width: 240px;
+  min-width: 200px;
+  border-radius: 8px;
+  padding: 14px;
+  margin: 6px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.98));
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 6px 18px rgba(10, 10, 10, 0.03);
+}
+
+.sensor-title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 8px;
+}
+
+.sensor-field {
+  margin: 6px 0;
+  font-size: .95rem;
+}
+
+.sensor-field strong {
+  font-weight: 700;
+}
+
+.sensor-ts {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin-top: 6px;
+}
+
+/* Alerts list */
+#alerts-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#alerts-list .list-group-item {
+  border: 0;
+  padding: 12px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+#alerts-list .list-group-item:last-child {
+  border-bottom: 0;
+}
+
+.alert-badge {
+  min-width: 62px;
+  text-align: center;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-weight: 700;
+  color: #fff;
+  font-size: 0.78rem;
+}
+
+.alert-badge.low {
+  background: var(--success);
+}
+
+.alert-badge.medium {
+  background: var(--warning);
+  color: #111;
+}
+
+.alert-badge.high {
+  background: var(--danger);
+}
+
+/* Table tweaks */
+.table {
+  margin-bottom: 0;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.table thead th {
+  font-weight: 700;
+  color: #333;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.table tbody td {
+  vertical-align: middle;
+}
+
+/* Charts wrapper - ensure canvas doesn't blow page height */
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+/* Chart card containers have fixed height to avoid page stretching */
+.card .chart-container {
+  width: 100%;
+  height: 360px;
+  position: relative;
+}
+
+/* Buttons & utilities */
+.btn-outline-primary {
+  border-color: rgba(13, 110, 253, 0.15);
+  color: var(--primary);
+}
+
+.tools .btn {
+  margin-bottom: 8px;
+}
+
+/* Layout spacing */
+.mb-4 {
+  margin-bottom: 1.5rem !important;
+}
+
+.gx-3 {
+  gap: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .site-main {
+    padding: 12px;
+  }
+
+  .sensor-card {
+    width: 100%;
+  }
+
+  .card .chart-container {
+    height: 300px;
+  }
+}
+
+@media (max-width: 576px) {
+  .card .chart-container {
+    height: 220px;
+  }
+
+  .navbar .navbar-brand {
+    font-size: 1rem;
+  }
+}
+
+/* Small visual helpers */
+.small {
+  font-size: .85rem;
+  color: var(--muted);
+}
+
+.center {
+  text-align: center;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+}
+
+/* Thin scrollbar for alert panels (modern browsers) */
+#alerts-list::-webkit-scrollbar,
+.table-responsive::-webkit-scrollbar {
+  width: 10px;
+}
+
+#alerts-list::-webkit-scrollbar-thumb,
+.table-responsive::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+}
+
+/* Error / warning message blocks */
+.notice {
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px dashed rgba(0, 0, 0, 0.04);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 250, 250, 0.98));
+  margin-bottom: 16px;
+}
+
+/* Tiny helpers for chart legends inline */
+.chart-legend {
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+/* Footer spacing if you add one */
+.site-footer {
+  margin-top: 24px;
+  padding: 20px 0;
+  color: var(--muted);
+}
+
+/* Dark mode helper (opt-in by body.dark) */
+body.dark {
+  --bg: #0f1720;
+  --card-bg: #0b1220;
+  --muted: #9aa6b2;
+  --primary: #2b7cff;
+  color: #e6eef6;
+  background: linear-gradient(180deg, #071227, #0f1720);
+}
+
+body.dark .card {
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+body.dark .navbar {
+  box-shadow: none;
+}
+
+/* Live Sensor Snapshot cards row */
+.node-cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  /* still wraps nicely on small screens */
+  gap: 1rem;
+}
+
+.node-card {
+  flex: 1 1 0;
+  min-width: 220px;
+  max-width: 280px;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--border-subtle);
+  background: #ffffff;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.node-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-strong);
+}
+
+.node-card.active {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 1.5px rgba(36, 99, 235, 0.3);
+}
+
+.node-card-title {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.node-card-meta {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.node-card-metric {
+  font-size: 0.9rem;
+  margin: 0.15rem 0;
+}
+
+/* ========================================
+   Alert History Page Styles
+   ======================================== */
+
+/* Page header */
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+  color: #1a1a2e;
+}
+
+.page-subtitle {
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Alerts layout - two column */
+.alerts-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+@media (max-width: 992px) {
+  .alerts-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Filter card */
+.alerts-filters-card .card-header h2 {
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.form-row {
+  margin-bottom: 1rem;
+}
+
+.form-row label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 0.35rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #fff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.1);
+}
+
+/* Metrics grid */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+}
+
+.metric-chip {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+  text-align: center;
+}
+
+.metric-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+}
+
+.metric-value {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.metric-chip.high .metric-value {
+  color: var(--danger);
+}
+
+.metric-chip.medium .metric-value {
+  color: #d97706;
+}
+
+.metric-chip.low .metric-value {
+  color: var(--success);
+}
+
+/* Export row */
+.export-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+}
+
+.btn-outline {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid var(--primary);
+  color: var(--primary);
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-outline:hover {
+  background: var(--primary);
+  color: #fff;
+}
+
+.export-hint {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+/* Table card */
+.alerts-table-card .card-header {
+  padding: 1rem 1.25rem;
+}
+
+.alerts-table-card .card-header h2 {
+  font-size: 1.2rem;
+  margin: 0 0 0.25rem 0;
+  font-weight: 600;
+}
+
+.card-subtitle {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Data table */
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.data-table thead {
+  background: #f8fafc;
+}
+
+.data-table th {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #4a5568;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  border-bottom: 2px solid #e2e8f0;
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.data-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.data-table .empty-row td {
+  text-align: center;
+  color: var(--muted);
+  padding: 2rem;
+}
+
+/* Risk badges in table */
+.risk-badge {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.risk-badge.high {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.risk-badge.medium {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.risk-badge.low {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+/* End of style.css */
